@@ -11,7 +11,6 @@ currentTime = 0
 currentDifficulty = "Normal"
 wordList = []
 
-
 class PlayWindow(Toplevel):
 
     def __init__(self, master):
@@ -43,8 +42,17 @@ class PlayWindow(Toplevel):
             wordList = words.getMedium()
         elif currentDifficulty == "Hard":
             wordList = words.getHard()
-
+        timercount = Label(self, font=('arial', 25, 'italic bold'), fg='blue')
+        scorelabel = Label(self, font=('arial', 25, 'italic bold'), fg='red')
+        scorelabelcount = Label(self, font=('arial', 25, 'italic bold'), fg='blue')
+        labelfortimer = Label(self, font=('arial', 25, 'italic bold'), fg='red')
+        gameinstruction = Label(self, text='Hit enter button after typing the word',font=('arial', 25, 'italic bold'), fg='grey')
         def giventime():
+            timercount.place(x=665, y=100)
+            scorelabel.place(x=50, y=100)
+            scorelabelcount.place(x=250, y=100)
+            labelfortimer.place(x=500, y=100)
+            gameinstruction.place(relx= 0.5, rely=0.90, anchor=CENTER)
             global currentScore, currentMissed, currentTime
             if currentTime > 11:
                 pass
@@ -55,19 +63,22 @@ class PlayWindow(Toplevel):
                 timercount.configure(text=currentTime)
                 timercount.after(1000, giventime)
             else:
-                gameinstruction.configure(text='Hit = {} | Miss = {} | Total Score = {}'
-                                          .format(currentScore, currentMissed, currentScore - currentMissed))
+                gameinstruction.configure(text='Hit = {} | Miss = {} | Total score = {}'.format(currentScore, currentMissed, currentScore - currentMissed))
                 rr = messagebox.askretrycancel('Notification', 'Do you want to play again?')
+                currentScore = 0
+                currentMissed = 0
+                currentTime = var.getTime()
                 if rr:
-                    currentScore = 0
-                    currentMissed = 0
-                    currentTime = var.getTime()
                     timercount.configure(text=currentTime)
-                    labelforward.configure(text=words[0])
+                    labelforward.configure(text=wordList[0])
 
                     scorelabelcount.configure(text=currentScore)
-                    gameinstruction(text = '')
+                    gameinstruction.configure(text='Hit enter button after typing the word',font=('arial', 25, 'italic bold'), fg='grey')
                     wordentry.delete(0, END)
+                else:
+                    self.destroy()
+                    master.update()
+                    master.deiconify()
 
         def game(event):
             global currentScore, currentMissed
@@ -75,9 +86,9 @@ class PlayWindow(Toplevel):
                 giventime()
             gameinstruction.configure()
             scorelabel.configure(text = "Your Score:")
-            scorelabelcount.configure(text = score)
+            scorelabelcount.configure(text = currentScore)
             labelfortimer.configure(text = "Time Left:")
-            timercount.configure(text = time)
+            timercount.configure(text = currentTime)
             startlabel.destroy()
             if wordentry.get() == labelforward['text']:
                 currentScore += 1
@@ -91,25 +102,12 @@ class PlayWindow(Toplevel):
         startlabel = Label(self, text='Start Typing', font=('arial', 45, 'italic bold'), fg='black')
         startlabel.place(relx=0.5, rely=0.25, anchor=CENTER)
 
-        random.shuffle(words)
-        labelforward = Label(self, text=words[0], font=('arial', 45, 'italic bold'), fg='green')
+        random.shuffle(wordList)
+        labelforward = Label(self, text=wordList[0], font=('arial', 45, 'italic bold'), fg='green')
         labelforward.place(relx=0.5, rely = 0.40, anchor=CENTER)
 
-        scorelabel = Label(self, font=('arial', 25, 'italic bold'), fg='red')
-        scorelabel.place(x=50, y=100)
-
-        scorelabelcount = Label(self, font=('arial', 25, 'italic bold'), fg='blue')
-        scorelabelcount.place(x=250, y=100)
-
-        labelfortimer = Label(self, font=('arial', 25, 'italic bold'), fg='red')
-        labelfortimer.place(x=500, y=100)
-
         timercount = Label(self, font=('arial', 25, 'italic bold'), fg='blue')
-        timercount.place(x=665, y=100)
 
-        gameinstruction = Label(self, text='Hit enter button after typing the word',
-                                font=('arial', 25, 'italic bold'), fg='grey')
-        gameinstruction.place(relx= 0.5, rely=0.90, anchor=CENTER)
 
         wordentry = Entry(self, font=('arial', 25, 'italic bold'), bd=10, justify='center')
         wordentry.place(relx=0.5, rely=0.55, anchor=CENTER)

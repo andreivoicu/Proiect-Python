@@ -9,7 +9,12 @@ class SettingsWindow(Toplevel):
         super().__init__(master=master)
         self.title("Settings")
         self.geometry("800x600")
+        bg = ImageTk.PhotoImage(file="home menu background.png")  # background for homePage
 
+        self.canvas = Canvas(master, width=800, height=600)
+        self.background_image = ImageTk.PhotoImage(file="home menu background.png")
+        self.background_label = Label(self, image=self.background_image)
+        self.background_label.place(relwidth=1, relheight=1, anchor='nw')
         def changeTime():
             timeInput = timeText.get("1.0", "end-1c")
             var.setTime(int(timeInput))
@@ -28,10 +33,10 @@ class SettingsWindow(Toplevel):
         # labels for time&difficulty
 
         timelabel = Label(self, text='set time', font=('comic', 30, 'italic bold'), fg='black')
-        timelabel.place(relx=0.35, rely=0.45, anchor=CENTER, height=70, width=200)
+        timelabel.place(relx=0.35, rely=0.45, anchor=CENTER)
 
         difficultylabel = Label(self, text='set difficulty', font=('comic', 30, 'italic bold'), fg='black')
-        difficultylabel.place(relx=0.35, rely=0.55, anchor=CENTER, height=70, width=200)
+        difficultylabel.place(relx=0.29, rely=0.55, anchor=CENTER)
 
         # text box for user to input time
 
@@ -43,7 +48,6 @@ class SettingsWindow(Toplevel):
         options = ['Easy', 'Medium', 'Hard']
         clicked = StringVar()
         clicked.set('Medium')
-
         drop = OptionMenu(self, clicked, *options)
         drop.place(relx=0.55, rely=0.55, anchor=CENTER)
 

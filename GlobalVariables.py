@@ -1,7 +1,7 @@
 time = 60
 score = 0
 missed = 0
-difficulty = "Normal"
+difficulty = "Medium"
 
 
 def getTime():
