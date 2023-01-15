@@ -3,6 +3,7 @@ import words
 from tkinter import *
 from tkinter import messagebox
 import GlobalVariables as var
+from PIL import Image, ImageTk
 
 currentScore = 0
 currentMissed = 0
@@ -10,13 +11,22 @@ currentTime = 0
 currentDifficulty = "Normal"
 wordList = []
 
+
 class PlayWindow(Toplevel):
 
     def __init__(self, master):
         super().__init__(master=master)
         self.title("Play!")
         self.geometry("800x600")
+        bg = ImageTk.PhotoImage(file="home menu background.png")  # background for homePage
 
+        self.canvas = Canvas(master, width=800, height=600)
+        self.background_image = ImageTk.PhotoImage(file="home menu background.png")
+        self.background_label = Label(self, image=self.background_image)
+        self.background_label.place(relwidth=1, relheight=1, anchor='nw')
+        
+    
+       
         backButton = Button(self, text="<-")
         backButton.bind("<Button>", lambda e: [self.destroy(), master.update(), master.deiconify()])
         backButton.place(relx=0, rely=0, anchor=NW, height=20, width=50)
@@ -54,15 +64,21 @@ class PlayWindow(Toplevel):
                     currentTime = var.getTime()
                     timercount.configure(text=currentTime)
                     labelforward.configure(text=words[0])
+
                     scorelabelcount.configure(text=currentScore)
+                    gameinstruction(text = '')
                     wordentry.delete(0, END)
 
         def game(event):
             global currentScore, currentMissed
             if currentTime == var.getTime():
                 giventime()
-            gameinstruction.configure(text='')
-            startlabel.configure(text='')
+            gameinstruction.configure()
+            scorelabel.configure(text = "Your Score:")
+            scorelabelcount.configure(text = score)
+            labelfortimer.configure(text = "Time Left:")
+            timercount.configure(text = time)
+            startlabel.destroy()
             if wordentry.get() == labelforward['text']:
                 currentScore += 1
                 scorelabelcount.configure(text=currentScore)
@@ -72,31 +88,31 @@ class PlayWindow(Toplevel):
             labelforward.configure(text=wordList[0])
             wordentry.delete(0, END)
 
-        startlabel = Label(self, text='Start Typing', font=('arial', 30, 'italic bold'), bg='black', fg='white')
-        startlabel.place(x=275, y=50)
+        startlabel = Label(self, text='Start Typing', font=('arial', 45, 'italic bold'), fg='black')
+        startlabel.place(relx=0.5, rely=0.25, anchor=CENTER)
 
-        random.shuffle(wordList)
-        labelforward = Label(self, text=wordList[0], font=('arial', 45, 'italic bold'), fg='green')
-        labelforward.place(x=250, y=240)
+        random.shuffle(words)
+        labelforward = Label(self, text=words[0], font=('arial', 45, 'italic bold'), fg='green')
+        labelforward.place(relx=0.5, rely = 0.40, anchor=CENTER)
 
-        scorelabel = Label(self, text='Your Score:', font=('arial', 25, 'italic bold'), fg='red')
-        scorelabel.place(x=10, y=100)
+        scorelabel = Label(self, font=('arial', 25, 'italic bold'), fg='red')
+        scorelabel.place(x=50, y=100)
 
-        scorelabelcount = Label(self, text=currentScore, font=('arial', 25, 'italic bold'), fg='blue')
-        scorelabelcount.place(x=150, y=180)
+        scorelabelcount = Label(self, font=('arial', 25, 'italic bold'), fg='blue')
+        scorelabelcount.place(x=250, y=100)
 
-        labelfortimer = Label(self, text='Time Left:', font=('arial', 25, 'italic bold'), fg='red')
-        labelfortimer.place(x=600, y=100)
+        labelfortimer = Label(self, font=('arial', 25, 'italic bold'), fg='red')
+        labelfortimer.place(x=500, y=100)
 
-        timercount = Label(self, text=currentTime, font=('arial', 25, 'italic bold'), fg='blue')
-        timercount.place(x=600, y=180)
+        timercount = Label(self, font=('arial', 25, 'italic bold'), fg='blue')
+        timercount.place(x=665, y=100)
 
         gameinstruction = Label(self, text='Hit enter button after typing the word',
                                 font=('arial', 25, 'italic bold'), fg='grey')
-        gameinstruction.place(x=150, y=500)
+        gameinstruction.place(relx= 0.5, rely=0.90, anchor=CENTER)
 
         wordentry = Entry(self, font=('arial', 25, 'italic bold'), bd=10, justify='center')
-        wordentry.place(x=250, y=330)
+        wordentry.place(relx=0.5, rely=0.55, anchor=CENTER)
         wordentry.focus_set()
 
         self.bind('<Return>', game)

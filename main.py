@@ -13,7 +13,6 @@ def main():
     # creates a Tk() object
     master = Tk()
     master.title('speed typer')
-    master.config(bg="orange")
     master.geometry("800x600")
 
     helv36 = font.Font(family='Comic', size=36, weight='bold')  # font
