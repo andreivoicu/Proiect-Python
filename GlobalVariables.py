@@ -1,6 +1,7 @@
 time = 60
 score = 0
 missed = 0
+characterNo = 0
 difficulty = "Medium"
 
 

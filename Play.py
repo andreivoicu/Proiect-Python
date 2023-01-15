@@ -10,6 +10,7 @@ currentMissed = 0
 currentTime = 0
 currentDifficulty = "Normal"
 wordList = []
+characterNo = 0
 
 class PlayWindow(Toplevel):
 
@@ -30,7 +31,7 @@ class PlayWindow(Toplevel):
         backButton.bind("<Button>", lambda e: [self.destroy(), master.update(), master.deiconify()])
         backButton.place(relx=0, rely=0, anchor=NW, height=20, width=50)
 
-        global currentTime, currentScore, currentMissed, currentDifficulty, wordList
+        global currentTime, currentScore, currentMissed, currentDifficulty, wordList, characterNo
         currentTime = var.getTime()
         currentScore = var.getScore()
         currentMissed = var.getMissed()
@@ -63,7 +64,8 @@ class PlayWindow(Toplevel):
                 timercount.configure(text=currentTime)
                 timercount.after(1000, giventime)
             else:
-                gameinstruction.configure(text='Hit = {} | Miss = {} | Total score = {}'.format(currentScore, currentMissed, currentScore - currentMissed))
+                gameinstruction.configure(text='Hit = {} | Miss = {} | Total score = {} | CPS = {}'
+                                          .format(currentScore, currentMissed, currentScore - currentMissed, characterNo // var.getTime()))
                 rr = messagebox.askretrycancel('Notification', 'Do you want to play again?')
                 currentScore = 0
                 currentMissed = 0
@@ -81,7 +83,7 @@ class PlayWindow(Toplevel):
                     master.deiconify()
 
         def game(event):
-            global currentScore, currentMissed
+            global currentScore, currentMissed, characterNo
             if currentTime == var.getTime():
                 giventime()
             gameinstruction.configure()
@@ -90,7 +92,10 @@ class PlayWindow(Toplevel):
             labelfortimer.configure(text = "Time Left:")
             timercount.configure(text = currentTime)
             startlabel.destroy()
-            if wordentry.get() == labelforward['text']:
+
+            inputWord = wordentry.get()
+            characterNo += len(inputWord)
+            if inputWord == labelforward['text']:
                 currentScore += 1
                 scorelabelcount.configure(text=currentScore)
             else:
