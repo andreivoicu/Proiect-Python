@@ -1,4 +1,4 @@
-# initializing home window
+# initializing home window®
 import Play
 import Settings
 
