@@ -54,7 +54,7 @@ class PlayWindow(Toplevel):
             scorelabelcount.place(x=250, y=100)
             labelfortimer.place(x=500, y=100)
             gameinstruction.place(relx= 0.5, rely=0.90, anchor=CENTER)
-            global currentScore, currentMissed, currentTime
+            global currentScore, currentMissed, currentTime, characterNo
             if currentTime > 11:
                 pass
             else:
@@ -69,11 +69,11 @@ class PlayWindow(Toplevel):
                 rr = messagebox.askretrycancel('Notification', 'Do you want to play again?')
                 currentScore = 0
                 currentMissed = 0
+                characterNo = 0
                 currentTime = var.getTime()
                 if rr:
                     timercount.configure(text=currentTime)
                     labelforward.configure(text=wordList[0])
-
                     scorelabelcount.configure(text=currentScore)
                     gameinstruction.configure(text='Hit enter button after typing the word',font=('arial', 25, 'italic bold'), fg='grey')
                     wordentry.delete(0, END)
