@@ -27,9 +27,9 @@ class PlayWindow(Toplevel):
         
     
        
-        backButton = Button(self, text="<-")
+        backButton = Button(self, text="<--")
         backButton.bind("<Button>", lambda e: [self.destroy(), master.update(), master.deiconify()])
-        backButton.place(relx=0, rely=0, anchor=NW, height=20, width=50)
+        backButton.place(relx=0.05, rely=0.05, anchor=NW, height=30, width=80)
 
         global currentTime, currentScore, currentMissed, currentDifficulty, wordList, characterNo
         currentTime = var.getTime()
